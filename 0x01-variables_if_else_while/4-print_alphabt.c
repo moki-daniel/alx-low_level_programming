@@ -4,7 +4,7 @@
  * main - print alphabet except q and e
  *
  * Return: zero
- */
+*/
 int main(void)
 {
 	char ch;
