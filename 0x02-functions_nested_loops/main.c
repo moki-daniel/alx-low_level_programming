@@ -8,5 +8,4 @@
 int main(void)
 {
 	_putchar()
-		print_alphabet()
 }
