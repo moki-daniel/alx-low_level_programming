@@ -1,9 +1,11 @@
 #include "main.h"
+
 /** 
  *print_number - prints integers 
  *@n: number to be printed 
  *Return: nothing 
  */ 
+
 void print_number(int n) 
 { 
         unsigned int x = n; 
@@ -17,3 +19,4 @@ void print_number(int n)
                 print_number(x / 10); 
         _putchar((x % 10) + '0'); 
 }
+
