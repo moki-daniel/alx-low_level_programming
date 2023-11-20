@@ -1,39 +1,19 @@
 #include "lists.h"
 
 /**
- * delete_nodeint_at_index - deletes a node in a linked list at a certain index
- * @head: pointer to the first element in the list
- * @index: index of the node to delete
+ * sum_listint - sum of all the data (n) of a listint_t linked list.
+ * @head: pointer to the first node
  *
- * Return: 1 (Success), or -1 (Fail)
+ * Return: sum all the data
  */
-int delete_nodeint_at_index(listint_t **head, unsigned int index)
+int sum_listint(listint_t *head)
 {
-    listint_t *temp = *head;
-    listint_t *current = NULL;
-    unsigned int i = 0;
+	int sum = 0;
 
-    if (*head == NULL)
-        return (-1);
-
-    if (index == 0)
-    {
-        *head = (*head)->next;
-        free(temp);
-        return (1);
-    }
-
-    while (i < index - 1)
-    {
-        if (!temp || !(temp->next))
-            return (-1);
-        temp = temp->next;
-        i++;
-    }
-
-    current = temp->next;
-    temp->next = current->next;
-    free(current);
-
-    return (1);
+	while (head != NULL)
+	{
+		sum += head->n;
+		head = head->next;
+	}
+	return (sum);
 }
