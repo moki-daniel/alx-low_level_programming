@@ -1,71 +1,61 @@
 #include "lists.h"
+#include <stdlib.h>
+#include <stdio.h>
 
 /**
-* print_listint_safe - prints a list but safely
-* @head: the head node. pointer
-*
-* Description: dont wanna print a infinite loop
-*	either match addresses or free the head so cant loop back
-* Return: the count number
-* A: we make an array that will store everything from head given
-* B: while the head is not null, we iterate through
-* C: count is initially 0 and i is 0 so we dont even loop through the first
-*	time, we skip this. we assign array to the head and increment head
-*	then we increase count so when we loop through again, we can go
-*	into the for loop
-* D: inside the loop, we check if the head value is equal to the array values
-*	if we found a match then we turn the boolean flag on and break and
-*	we make the index equal to whatever the i counter was
-* E: if we found a match, which is a loop, we break out of the while loop
-* F: new loop, we will loop through our array values we copied over from head
-*	and we print out their pointer address and their value.
-* G: if we had an infinite loop we have a flag check of 1 which will
-*	also print out the index which is the last one.
-*/
+ * _r - reallocates memory for an array of pointers
+ * to the nodes in a linked list
+ * @list: the old list to append
+ * @size: size of the new list (always one more than the old list)
+ * @new: new node to add to the list
+ *
+ * Return: pointer to the new list
+ */
+const listint_t **_r(const listint_t **list, size_t size, const listint_t *new)
+{
+	const listint_t **newlist;
+	size_t i;
 
+	newlist = malloc(size * sizeof(listint_t *));
+	if (newlist == NULL)
+	{
+		free(list);
+		exit(98);
+	}
+	for (i = 0; i < size - 1; i++)
+		newlist[i] = list[i];
+	newlist[i] = new;
+	free(list);
+	return (newlist);
+}
+
+/**
+ * print_listint_safe - prints a listint_t linked list.
+ * @head: pointer to the start of the list
+ *
+ * Return: the number of nodes in the list
+ */
 size_t print_listint_safe(const listint_t *head)
 {
-	size_t count = 0;
-	size_t index = 0;
-	listint_t const **array;/* A */
+	size_t i, num = 0;
+	const listint_t **list = NULL;
 
-	array = malloc(sizeof(listint_t *) * 1024);
-	if (!array)
-		exit(98);
-	unsigned int i = 0;
-	unsigned int flag = 0;
-
-	while (head != NULL)/* B */
+	while (head != NULL)
 	{
-		for (i = 0; i < count; i++)/* C*/
+		for (i = 0; i < num; i++)
 		{
-			if (head == array[i])/* D */
+			if (head == list[i])
 			{
-				flag = 1;
-				index = i;
-				break;
+				printf("-> [%p] %d\n", (void *)head, head->n);
+				free(list);
+				return (num);
 			}
-			else
-				flag = 0;
 		}
-
-		if (flag == 1)/* E */
-			break;
-		array[count] = head;
+		num++;
+		list = _r(list, num, head);
+		printf("[%p] %d\n", (void *)head, head->n);
 		head = head->next;
-		count++;
 	}
-
-	i = 0;
-	while (i < count)/* F */
-	{
-		printf("[%p] %d\n", (void *)array[i], array[i]->n);
-		i++;
-	}
-	if (flag == 1)/* G */
-	{
-		printf("-> [%p] %d\n", (void *)array[index], array[index]->n);
-	}
-	free(array);
-	return (count);
+	free(list);
+	return (num);
 }
